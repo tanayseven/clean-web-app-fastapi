@@ -1,0 +1,15 @@
+{
+  "name": "job_message",
+  "type": "record",
+  "namespace": "com.tanayseven.sample-kafka",
+  "fields": [
+    {
+      "name": "computation_type",
+      "type": "string"
+    },
+    {
+      "name": "computation_value",
+      "type": "string"
+    }
+  ]
+}

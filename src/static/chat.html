@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chat</title>
+</head>
+<body>
+<h1>WebSocket Chat</h1>
+<h2>Your ID: <span id="ws-id"></span></h2>
+<input type="text" id="messageText" autocomplete="off" />
+<button id="send-button" disabled onclick="sendMessage(event)">Send</button>
+<ul id='messages'>
+</ul>
+<script>
+    document.querySelector("#ws-id").textContent = "Connecting..."
+    let ws = null;
+    fetch(`https://www.uuidgenerator.net/api/version4`)
+        .then(response => response.text())
+        .then(uuid => {
+            let client_id = uuid
+            document.querySelector("#ws-id").textContent = client_id
+            document.querySelector("#send-button").removeAttribute("disabled")
+            ws = new WebSocket(`ws://localhost:8080/chat/${client_id}`);
+            ws.onmessage = function (event) {
+                let messages = document.getElementById('messages')
+                let message = document.createElement('li')
+                let content = document.createTextNode(event.data)
+                message.appendChild(content)
+                messages.appendChild(message)
+            };
+        })
+        .catch(error => {
+            document.querySelector("#ws-id").textContent = "Failed to connect to server";
+        })
+    function sendMessage(event) {
+        event.preventDefault()
+        let input = document.getElementById("messageText")
+        ws.send(input.value)
+        input.value = ''
+    }
+</script>
+</body>
+</html>

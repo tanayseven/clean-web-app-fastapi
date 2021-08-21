@@ -1,0 +1,16 @@
+repos:
+  - repo: local
+    hooks:
+      - id: mypy
+        name: Check the Python types
+        entry: poetry run mypy src/ test/
+        language: system
+        always_run: true
+        pass_filenames: false
+      - id: black
+        name: Reformat the Python files
+        entry: poetry run black .
+        language: system
+        always_run: true
+        pass_filenames: false
+
