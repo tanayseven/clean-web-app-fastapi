@@ -31,6 +31,8 @@ types-boto3 = "^1.0.1"
 moto = "^2.2.1"
 pytest-docker-compose = "^3.2.1"
 types-requests = "^2.25.6"
+pytest-testmon = "^1.1.2"
+pytest-watch = "^4.2.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

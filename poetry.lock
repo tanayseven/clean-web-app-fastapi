@@ -1101,6 +1101,32 @@ pytest = ">=2.9"
 termcolor = ">=1.1.0"
 
 [[package]]
+name = "pytest-testmon"
+version = "1.1.2"
+description = "selects tests affected by changed files and methods"
+category = "dev"
+optional = false
+python-versions = ">=3.6"
+
+[package.dependencies]
+coverage = ">=4,<7"
+pytest = ">=5,<7"
+
+[[package]]
+name = "pytest-watch"
+version = "4.2.0"
+description = "Local continuous test runner with pytest and watchdog."
+category = "dev"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+colorama = ">=0.3.3"
+docopt = ">=0.4.0"
+pytest = ">=2.6.4"
+watchdog = ">=0.6.0"
+
+[[package]]
 name = "python-dateutil"
 version = "2.8.2"
 description = "Extensions to the standard Python datetime module"
@@ -1411,6 +1437,17 @@ docs = ["proselint (>=0.10.2)", "sphinx (>=3)", "sphinx-argparse (>=0.2.5)", "sp
 testing = ["coverage (>=4)", "coverage-enable-subprocess (>=1)", "flaky (>=3)", "pytest (>=4)", "pytest-env (>=0.6.2)", "pytest-freezegun (>=0.4.1)", "pytest-mock (>=2)", "pytest-randomly (>=1)", "pytest-timeout (>=1)", "packaging (>=20.0)"]
 
 [[package]]
+name = "watchdog"
+version = "2.1.4"
+description = "Filesystem events monitoring"
+category = "dev"
+optional = false
+python-versions = ">=3.6"
+
+[package.extras]
+watchmedo = ["PyYAML (>=3.10)", "argh (>=0.24.1)"]
+
+[[package]]
 name = "watchgod"
 version = "0.7"
 description = "Simple, modern file watching and code reload in python."
@@ -1459,7 +1496,7 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "f3c90028dad61634a265fcc23925202ffa82e1786c8157e9a4b73b0bc6f23d2c"
+content-hash = "83db08f54e0301573b87d51579f059d2cc0ecf3964d89e734a81d4e9a89ea801"
 
 [metadata.files]
 aiofiles = [
@@ -2036,6 +2073,12 @@ pytest-docker-compose = [
 pytest-sugar = [
     {file = "pytest-sugar-0.9.4.tar.gz", hash = "sha256:b1b2186b0a72aada6859bea2a5764145e3aaa2c1cfbb23c3a19b5f7b697563d3"},
 ]
+pytest-testmon = [
+    {file = "pytest-testmon-1.1.2.tar.gz", hash = "sha256:91f4513f7e5a1cf4f1eda25ab7f310497abe30e5f19b612fd80ba7d5f60b58a6"},
+]
+pytest-watch = [
+    {file = "pytest-watch-4.2.0.tar.gz", hash = "sha256:06136f03d5b361718b8d0d234042f7b2f203910d8568f63df2f866b547b3d4b9"},
+]
 python-dateutil = [
     {file = "python-dateutil-2.8.2.tar.gz", hash = "sha256:0123cacc1627ae19ddf3c27a5de5bd67ee4586fbdd6440d9748f8abb483d3e86"},
     {file = "python_dateutil-2.8.2-py2.py3-none-any.whl", hash = "sha256:961d03dc3453ebbc59dbdea9e4e11c5651520a876d0f4db161e8674aae935da9"},
@@ -2245,6 +2288,31 @@ uvloop = [
 virtualenv = [
     {file = "virtualenv-20.7.0-py2.py3-none-any.whl", hash = "sha256:fdfdaaf0979ac03ae7f76d5224a05b58165f3c804f8aa633f3dd6f22fbd435d5"},
     {file = "virtualenv-20.7.0.tar.gz", hash = "sha256:97066a978431ec096d163e72771df5357c5c898ffdd587048f45e0aecc228094"},
+]
+watchdog = [
+    {file = "watchdog-2.1.4-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:073b379d74aecc7fcba3ee8c2a7b4ac5d56deca52bd47bab024464a47c084d34"},
+    {file = "watchdog-2.1.4-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:1dd5e0e1577a0f3362f6ab986264d9695e40dfba247b994a522bfab254544fc1"},
+    {file = "watchdog-2.1.4-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:34e1517e745b223eb682d09a7ba2532cbb55ce9c8c778daba0955e1af37c903e"},
+    {file = "watchdog-2.1.4-cp36-cp36m-macosx_10_9_x86_64.whl", hash = "sha256:bee7eb674850f052599d19f1efdd4db9bc4690593462b760662a38298f1d65b4"},
+    {file = "watchdog-2.1.4-cp37-cp37m-macosx_10_9_x86_64.whl", hash = "sha256:e6e6b3a9920ca84d6cc22b313c87fac426e92114d1927ade2909ada3de243d45"},
+    {file = "watchdog-2.1.4-cp38-cp38-macosx_10_9_universal2.whl", hash = "sha256:407524dc30d9e3bb46017987b100574eeb810d9cc50488aabf81a03ae70c4962"},
+    {file = "watchdog-2.1.4-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:78e36af08a94325b7852827004f4bea1a9b472a532498026a4b8529189797a15"},
+    {file = "watchdog-2.1.4-cp38-cp38-macosx_11_0_arm64.whl", hash = "sha256:9e0a159fedb9d83dee80b00759a82acd2596a3ed70247088f8a175ce46116096"},
+    {file = "watchdog-2.1.4-cp39-cp39-macosx_10_9_universal2.whl", hash = "sha256:39a0711a6439a6fa8d9c78c93759fbb07bc61bb06378eaa5a32148a1468a8e87"},
+    {file = "watchdog-2.1.4-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:d8bd7eec21964687b2364e7ab38fda6b4567809d590a0506f74cc48b2a2dfce4"},
+    {file = "watchdog-2.1.4-cp39-cp39-macosx_11_0_arm64.whl", hash = "sha256:f743b2581c241f55b716e35b451f53076a07e15e1f2f0a83016c2ecaf6ace78e"},
+    {file = "watchdog-2.1.4-pp37-pypy37_pp73-macosx_10_9_x86_64.whl", hash = "sha256:9b332a20029ebdff605829219fe858070b128471d60a9b6cc4797bb167fe22ff"},
+    {file = "watchdog-2.1.4-py3-none-manylinux2014_aarch64.whl", hash = "sha256:becbe589b63891cfaa24afe8e31fa7ac0d541701644767c9c28f14da1d5489b7"},
+    {file = "watchdog-2.1.4-py3-none-manylinux2014_armv7l.whl", hash = "sha256:73782538f9ab7d0fc1f78abd34fe94feea119bd2644c2659d71068d7252a774e"},
+    {file = "watchdog-2.1.4-py3-none-manylinux2014_i686.whl", hash = "sha256:60785287032cc2cbd428486c0ff0a4b5c098d1ad256449ffe5fdd69657f5a126"},
+    {file = "watchdog-2.1.4-py3-none-manylinux2014_ppc64.whl", hash = "sha256:2cca4c2725112d5a8b5b89ea24a51dad702db7048ae08dba0435b2c382f08e6d"},
+    {file = "watchdog-2.1.4-py3-none-manylinux2014_ppc64le.whl", hash = "sha256:536bca6bc9661279310e5946ad4c2dfa5b2b1624e44a7acdf8cb37a10cc45f00"},
+    {file = "watchdog-2.1.4-py3-none-manylinux2014_s390x.whl", hash = "sha256:0d4602a93e404b3b01e249297ce950ed249295a0c124cdb4b3fbc696032918fb"},
+    {file = "watchdog-2.1.4-py3-none-manylinux2014_x86_64.whl", hash = "sha256:afb03a13c8a75a74f2894a313298ee95ff09fba1f02081ead249e790a5304a18"},
+    {file = "watchdog-2.1.4-py3-none-win32.whl", hash = "sha256:47480f3a82694fe1f4d552b3da8420fecfc5273ba7996d7ceadd838d1970b31a"},
+    {file = "watchdog-2.1.4-py3-none-win_amd64.whl", hash = "sha256:a56c7631dde228d81834466ebf4ebcc8996678b0f794e3e6dc401e9e71e9388d"},
+    {file = "watchdog-2.1.4-py3-none-win_ia64.whl", hash = "sha256:6c58d1cbf01884602afcbc631f79f709812e20ec100a6526c91895d3238d4474"},
+    {file = "watchdog-2.1.4.tar.gz", hash = "sha256:438efbbd929b6436add7ce89f3466ca836f31588220433efeb757b5947a9c979"},
 ]
 watchgod = [
     {file = "watchgod-0.7-py3-none-any.whl", hash = "sha256:d6c1ea21df37847ac0537ca0d6c2f4cdf513562e95f77bb93abbcf05573407b7"},
