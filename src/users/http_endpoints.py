@@ -52,10 +52,10 @@ async def user_sign_up(
         )
     except UserExistsError:
         response.status_code = status.HTTP_400_BAD_REQUEST
-        return {"message": "failed to create user, user already exists"}
+        return {"detail": "failed to create user, user already exists"}
     else:
         response.status_code = status.HTTP_201_CREATED
-        return {"message": "sign up successful"}
+        return {"detail": "sign up successful"}
 
 
 class LoginRequest(BaseModel):
@@ -90,8 +90,8 @@ async def user_login(
     login_successful: Optional[User] = db.query(User).filter(User.username == form_data.username).first()
     if login_successful is None or login_successful.password != hash_password(form_data.password):
         response.status_code = status.HTTP_401_UNAUTHORIZED
-        return {"message": "Invalid auth credentials"}
-    return {"message": "login successful", "token": f"{form_data.username}"}
+        return {"detail": "Invalid auth credentials"}
+    return {"detail": "login successful", "token": f"{form_data.username}"}
 
 
 class CreateBlogRequest(BaseModel):
@@ -100,4 +100,4 @@ class CreateBlogRequest(BaseModel):
 
 @router.post("/create-blog", tags=["blogs"])
 async def create_blog(create_blog_request: CreateBlogRequest, current_user: User = Depends(get_current_user)) -> dict:
-    return {"message": f"Successfully authenticated {current_user.username}"}
+    return {"detail": f"Successfully authenticated {current_user.username}"}

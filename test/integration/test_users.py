@@ -12,7 +12,7 @@ def test_login_success(client: TestClient, db: Session) -> None:
         f"/user/login", data={"username": "john.doe", "password": "password"}
     )
     assert response.status_code == status.HTTP_200_OK
-    assert response.json() == {"message": "login successful", "token": "john.doe"}
+    assert response.json() == {"detail": "login successful", "token": "john.doe"}
 
 
 def test_login_with_invalid_username_fails(client: TestClient, db: Session) -> None:
@@ -21,7 +21,7 @@ def test_login_with_invalid_username_fails(client: TestClient, db: Session) -> N
         f"/user/login", data={"username": "foo.bar", "password": "password"}
     )
     assert response.status_code == status.HTTP_401_UNAUTHORIZED
-    assert response.json() == {"message": "Invalid auth credentials"}
+    assert response.json() == {"detail": "Invalid auth credentials"}
 
 
 def test_login_with_invalid_password_fails(client: TestClient, db: Session) -> None:
@@ -30,7 +30,7 @@ def test_login_with_invalid_password_fails(client: TestClient, db: Session) -> N
         f"/user/login", data={"username": "john.doe", "password": "foobar"}
     )
     assert response.status_code == status.HTTP_401_UNAUTHORIZED
-    assert response.json() == {"message": "Invalid auth credentials"}
+    assert response.json() == {"detail": "Invalid auth credentials"}
 
 
 def test_sign_up_successful(client: TestClient) -> None:
@@ -41,7 +41,7 @@ def test_sign_up_successful(client: TestClient) -> None:
     }
     response = client.post(f"/user/sign-up", json=user_sign_up)
     assert response.status_code == status.HTTP_201_CREATED
-    assert response.json() == {"message": "sign up successful"}
+    assert response.json() == {"detail": "sign up successful"}
 
 
 def test_sign_up_fails_when_user_exists(client: TestClient, db: Session) -> None:
@@ -53,7 +53,7 @@ def test_sign_up_fails_when_user_exists(client: TestClient, db: Session) -> None
     }
     response = client.post(f"/user/sign-up", json=user_sign_up)
     assert response.status_code == status.HTTP_400_BAD_REQUEST
-    assert response.json() == {"message": "failed to create user, user already exists"}
+    assert response.json() == {"detail": "failed to create user, user already exists"}
 
 
 def _create_john_doe_user(db: Session) -> None:
