@@ -1,4 +1,4 @@
 #!/bin/bash
 export PYTHONPATH=$PWD
 export APP_ENV="dev"
-./prun ptw --onpass 'notify-send -u normal -a "✅ Pytest - Success" "The tests have succeeded ✅✅"' --onfail 'notify-send -u critical -a "❌ Pytest - Failure" "The tests have failed ❌❌"' --runner 'pytest test/integration --docker-compose=docker-compose.yaml --use-running-containers --testmon'
+./prun ptw --onpass 'notify-send -u normal -a "✅ Pytest - Success" "The tests have succeeded ✅✅"' --onfail 'notify-send -u normal -a "❌ Pytest - Failure" "The tests have failed ❌❌"' --runner 'pytest test/integration --docker-compose=docker-compose.yaml --use-running-containers --testmon'
