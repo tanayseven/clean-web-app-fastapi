@@ -2,6 +2,7 @@ from typing import Optional
 
 from fastapi import APIRouter, Depends, status, HTTPException
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from passlib.context import CryptContext
 from pydantic.main import BaseModel
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
@@ -24,6 +25,9 @@ class UserExistsError(Exception):
 
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/user/login")
+
+
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
 def create_user(db: Session, username: str, password: str, email: str) -> None:
@@ -80,18 +84,32 @@ async def get_current_user(token: str = Depends(oauth2_scheme), db: Session = De
 
 
 def hash_password(password: str) -> str:
-    return f"hash+{password}"
+    return pwd_context.hash(password)
+
+
+def verify_password(plain_password: str, hashed_password: str) -> bool:
+    return pwd_context.verify(plain_password, hashed_password)
 
 
 @router.post("/user/login", tags=["users", "login"])
 async def user_login(
         response: Response, db: Session = Depends(get_db), form_data: OAuth2PasswordRequestForm = Depends()
 ) -> dict:
-    login_successful: Optional[User] = db.query(User).filter(User.username == form_data.username).first()
-    if login_successful is None or login_successful.password != hash_password(form_data.password):
-        response.status_code = status.HTTP_401_UNAUTHORIZED
-        return {"detail": "Invalid auth credentials"}
-    return {"detail": "login successful", "token": f"{form_data.username}"}
+    user_is_authenticated = await authenticate_user(form_data, db)
+    if user_is_authenticated:
+        return {"detail": "login successful", "token": f"{form_data.username}"}
+    response.status_code = status.HTTP_401_UNAUTHORIZED
+    return {"detail": "Invalid auth credentials"}
+
+
+async def authenticate_user(form_data: OAuth2PasswordRequestForm, db: Session = Depends(get_db)) -> bool:
+    user: Optional[User] = db.query(User).filter(User.username == form_data.username).first()
+    user_exists = user is not None
+    password_is_valid = False
+    if user_exists:
+        password_is_valid = verify_password(form_data.password, user.password)
+    user_is_authenticated = user_exists and password_is_valid
+    return user_is_authenticated
 
 
 class CreateBlogRequest(BaseModel):
