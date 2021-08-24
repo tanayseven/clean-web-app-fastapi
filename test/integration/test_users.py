@@ -1,3 +1,5 @@
+import re
+
 from fastapi.testclient import TestClient
 from sqlalchemy.orm import Session
 from fastapi import status
@@ -6,13 +8,19 @@ from src.users.db_tables import User
 from src.users.http_endpoints import hash_password
 
 
+def is_valid_format_for_auth_token(auth_token: str) -> bool:
+    regex = re.compile(r"[A-Za-z0-9-_]*\.[A-Za-z0-9-_]*\.[A-Za-z0-9-_]*$")
+    return regex.fullmatch(auth_token) is not None
+
+
 def test_login_success(client: TestClient, db: Session) -> None:
     _create_john_doe_user(db)
     response = client.post(
         f"/user/login", data={"username": "john.doe", "password": "password"}
     )
     assert response.status_code == status.HTTP_200_OK
-    assert response.json() == {"detail": "login successful", "token": "john.doe"}
+    assert response.json()["detail"] == "login successful"
+    assert is_valid_format_for_auth_token(response.json()["token"])
 
 
 def test_login_with_invalid_username_fails(client: TestClient, db: Session) -> None:
