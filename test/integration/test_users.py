@@ -4,8 +4,7 @@ from fastapi.testclient import TestClient
 from sqlalchemy.orm import Session
 from fastapi import status
 
-from src.users.db_tables import User
-from src.users.http_endpoints import hash_password
+from test.data.seed_data import create_john_doe_user  # type: ignore
 
 
 def is_valid_format_for_auth_token(auth_token: str) -> bool:
@@ -14,7 +13,7 @@ def is_valid_format_for_auth_token(auth_token: str) -> bool:
 
 
 def test_login_success(client: TestClient, db: Session) -> None:
-    _create_john_doe_user(db)
+    create_john_doe_user(db)
     response = client.post(
         f"/user/login", data={"username": "john.doe", "password": "password"}
     )
@@ -24,7 +23,7 @@ def test_login_success(client: TestClient, db: Session) -> None:
 
 
 def test_login_with_invalid_username_fails(client: TestClient, db: Session) -> None:
-    _create_john_doe_user(db)
+    create_john_doe_user(db)
     response = client.post(
         f"/user/login", data={"username": "foo.bar", "password": "password"}
     )
@@ -33,7 +32,7 @@ def test_login_with_invalid_username_fails(client: TestClient, db: Session) -> N
 
 
 def test_login_with_invalid_password_fails(client: TestClient, db: Session) -> None:
-    _create_john_doe_user(db)
+    create_john_doe_user(db)
     response = client.post(
         f"/user/login", data={"username": "john.doe", "password": "foobar"}
     )
@@ -53,7 +52,7 @@ def test_sign_up_successful(client: TestClient) -> None:
 
 
 def test_sign_up_fails_when_user_exists(client: TestClient, db: Session) -> None:
-    _create_john_doe_user(db)
+    create_john_doe_user(db)
     user_sign_up = {
         "username": "john.doe",
         "password": "password",
@@ -62,9 +61,3 @@ def test_sign_up_fails_when_user_exists(client: TestClient, db: Session) -> None
     response = client.post(f"/user/sign-up", json=user_sign_up)
     assert response.status_code == status.HTTP_400_BAD_REQUEST
     assert response.json() == {"detail": "failed to create user, user already exists"}
-
-
-def _create_john_doe_user(db: Session) -> None:
-    user = User(username="john.doe", password=hash_password("password"), email="john.doe@company.com")
-    db.add(user)
-    db.commit()

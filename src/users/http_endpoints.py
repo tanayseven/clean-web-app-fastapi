@@ -82,7 +82,7 @@ async def get_current_user(token: str = Depends(oauth2_scheme), db: Session = De
     )
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        username: Optional[str] = payload.get("sub")
+        username: Optional[str] = payload.get("username")
     except JWTError:
         raise authentication_exception
     if username is None:
@@ -94,11 +94,11 @@ async def get_current_user(token: str = Depends(oauth2_scheme), db: Session = De
 
 
 def hash_password(password: str) -> str:
-    return pwd_context.hash(password)
+    return pwd_context.hash(password)  # type: ignore
 
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
-    return pwd_context.verify(plain_password, hashed_password)
+    return pwd_context.verify(plain_password, hashed_password)  # type: ignore
 
 
 @router.post("/user/login", tags=["users", "login"])
@@ -124,7 +124,7 @@ def create_auth_token(data: dict, expires_delta: Optional[timedelta] = None) -> 
         expire = datetime.utcnow() + timedelta(minutes=15)
     to_encode.update({"exp": expire})
     auth_token = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
-    return auth_token
+    return auth_token  # type: ignore
 
 
 async def authenticate_user(form_data: OAuth2PasswordRequestForm, db: Session = Depends(get_db)) -> Tuple[bool, str]:
@@ -144,5 +144,6 @@ class CreateBlogRequest(BaseModel):
 
 
 @router.post("/create-blog", tags=["blogs"])
-async def create_blog(create_blog_request: CreateBlogRequest, current_user: User = Depends(get_current_user)) -> dict:
+async def create_blog(response: Response, create_blog_request: CreateBlogRequest, current_user: User = Depends(get_current_user)) -> dict:
+    response.status_code = status.HTTP_201_CREATED
     return {"detail": f"Successfully authenticated {current_user.username}"}
