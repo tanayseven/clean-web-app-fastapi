@@ -2,6 +2,8 @@ version: "3.9"
 services:
   db:
     image: "postgres"
+    volumes:
+      - ./docker-postgresql-multiple-databases:/docker-entrypoint-initdb.d
     tmpfs:
       - /run
       - /var/cache
@@ -9,7 +11,7 @@ services:
       PGDATA: /pgtmpfs
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: password
-      POSTGRES_DB: admin
+      POSTGRES_MULTIPLE_DATABASES: dev_admin,test_admin
     ports:
       - "5432:5432"
   adminer:
@@ -18,7 +20,6 @@ services:
       - "3000:8080"
     depends_on:
       - db
-
   email:
     image: "mailhog/mailhog"
     ports:

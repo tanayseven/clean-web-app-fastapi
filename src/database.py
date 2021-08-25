@@ -1,14 +1,11 @@
-from configparser import ConfigParser
-from os import environ
 from typing import Generator
 
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, Session
 
-environment = environ["APP_ENV"]
-config = ConfigParser()
-config.read(f"config-{environment}.ini")
+from src.config import config
+
 username = config.get("database", "username")
 password = config.get("database", "password")
 database_name = config.get("database", "database-name")
