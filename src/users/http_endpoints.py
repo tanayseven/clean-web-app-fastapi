@@ -3,8 +3,8 @@ from typing import Optional, Tuple
 
 from fastapi import APIRouter, Depends, status, HTTPException
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
-from jose import jwt, JWTError
-from passlib.context import CryptContext
+from jose import jwt, JWTError  # type: ignore
+from passlib.context import CryptContext  # type: ignore
 from pydantic.main import BaseModel
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
@@ -139,11 +139,3 @@ async def authenticate_user(form_data: OAuth2PasswordRequestForm, db: Session = 
     return user_is_authenticated, auth_token
 
 
-class CreateBlogRequest(BaseModel):
-    content: str
-
-
-@router.post("/create-blog", tags=["blogs"])
-async def create_blog(response: Response, create_blog_request: CreateBlogRequest, current_user: User = Depends(get_current_user)) -> dict:
-    response.status_code = status.HTTP_201_CREATED
-    return {"detail": f"Successfully authenticated {current_user.username}"}
