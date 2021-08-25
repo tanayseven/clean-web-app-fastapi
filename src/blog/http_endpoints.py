@@ -4,7 +4,7 @@ from starlette import status
 from starlette.responses import Response
 
 from src.users.db_tables import User
-from src.users.http_endpoints import get_current_user
+from src.users.functionality import get_current_user
 
 router = APIRouter()
 

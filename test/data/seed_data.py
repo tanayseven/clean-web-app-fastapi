@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 
 from src.users.db_tables import User
-from src.users.http_endpoints import hash_password
+from src.users.functionality import hash_password
 
 
 def create_john_doe_user(db: Session) -> None:

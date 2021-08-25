@@ -2,7 +2,7 @@ from fastapi import status
 from fastapi.testclient import TestClient
 from sqlalchemy.orm import Session
 
-from src.users.http_endpoints import create_auth_token
+from src.users.functionality import create_auth_token
 from test.data.seed_data import create_john_doe_user  # type: ignore
 
 
