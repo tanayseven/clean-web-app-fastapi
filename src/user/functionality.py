@@ -13,7 +13,9 @@ from src.config import config
 from src.database import get_db
 from src.user.db_tables import User
 
-pwd_context = CryptContext(schemes=[config.get("security", "encryption-scheme")], deprecated="auto")
+pwd_context = CryptContext(
+    schemes=[config.get("security", "encryption-scheme")], deprecated="auto"
+)
 SECRET_KEY = "09d25e094faa6ca2556c818166b7a9563b93f7099f6f0f4caa6cf63b88e8d3e7"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
@@ -35,7 +37,9 @@ def create_user(db: Session, username: str, password: str, email: str) -> None:
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/user/login")
 
 
-async def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)) -> User:
+async def get_current_user(
+    token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)
+) -> User:
     authentication_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Invalid auth credentials",
@@ -73,15 +77,21 @@ def create_auth_token(data: dict, expires_delta: Optional[timedelta] = None) -> 
     return auth_token  # type: ignore
 
 
-async def authenticate_user(form_data: OAuth2PasswordRequestForm, db: Session = Depends(get_db)) -> Tuple[bool, str]:
-    user: Optional[User] = db.query(User).filter(User.username == form_data.username).first()
+async def authenticate_user(
+    form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)
+) -> Tuple[bool, str]:
+    user: Optional[User] = (
+        db.query(User).filter(User.username == form_data.username).first()
+    )
     user_exists = user is not None
     password_is_valid = False
     if user is not None:
         password_is_valid = verify_password(form_data.password, user.password)
     user_is_authenticated = user_exists and password_is_valid
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
-    auth_token = create_auth_token({"username": f"{form_data.username}"}, expires_delta=access_token_expires)
+    auth_token = create_auth_token(
+        {"username": f"{form_data.username}"}, expires_delta=access_token_expires
+    )
     return user_is_authenticated, auth_token
 
 
