@@ -3,7 +3,7 @@ from pathlib import Path
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 
-from src.users.http_endpoints import router as users_router
+from src.user.http_endpoints import router as users_router
 from src.file_management.http_endpoints import router as file_management_router
 from src.blog.http_endpoints import router as blog_router
 

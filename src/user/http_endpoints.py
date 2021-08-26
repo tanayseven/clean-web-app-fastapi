@@ -7,7 +7,7 @@ from sqlalchemy.orm import Session
 from fastapi.responses import Response
 
 from src.database import get_db
-from src.users.functionality import create_user, authenticate_user, UserExistsError
+from src.user.functionality import create_user, authenticate_user, UserExistsError
 
 router = APIRouter()
 
@@ -18,7 +18,7 @@ class SignUpRequest(BaseModel):
     email: str
 
 
-@router.post("/user/sign-up", tags=["users", "sign-up"])
+@router.post("/user/sign-up", tags=["user", "sign-up"])
 async def user_sign_up(
         sign_up_request: SignUpRequest, response: Response, db: Session = Depends(get_db)
 ) -> dict:
@@ -42,7 +42,7 @@ class LoginRequest(BaseModel):
     password: str
 
 
-@router.post("/user/login", tags=["users", "login"])
+@router.post("/user/login", tags=["user", "login"])
 async def user_login(
         response: Response, db: Session = Depends(get_db), form_data: OAuth2PasswordRequestForm = Depends()
 ) -> dict:
