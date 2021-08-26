@@ -1,4 +1,0 @@
-#!/bin/bash
-export PYTHONPATH=$PWD
-export APP_ENV="test"
-poetry run ptw --onpass 'notify-send -u normal -a "✅ Pytest - Success" "The tests have succeeded ✅✅"' --onfail 'notify-send -u normal -a "❌ Pytest - Failure" "The tests have failed ❌❌"' --runner 'pytest test/integration --docker-compose=docker-compose.yaml --use-running-containers --testmon'
