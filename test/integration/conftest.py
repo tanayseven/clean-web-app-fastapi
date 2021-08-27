@@ -38,12 +38,16 @@ def db() -> Generator[Session, None, None]:
 
 @pytest.fixture(scope="function", autouse=True)
 def reset_tables() -> Generator[None, None, None]:
-    try:
-        [table.__table__.create(engine) for table in tables]
-    except ProgrammingError:
-        pass
+    for table in tables:
+        try:
+            table.__table__.create(engine)
+        except ProgrammingError:
+            pass
     yield
-    try:
-        [table.__table__.drop(engine) for table in tables]
-    except ProgrammingError:
-        pass
+    tables.reverse()
+    for table in tables:
+        try:
+            table.__table__.drop(engine)
+        except ProgrammingError:
+            pass
+    tables.reverse()
