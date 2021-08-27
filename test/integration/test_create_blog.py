@@ -19,8 +19,8 @@ def test_create_blog_is_successful(client: TestClient, db: Session) -> None:
 def test_create_blog_request_fails_when_user_is_not_authenticated(
     client: TestClient,
 ) -> None:
-    token = "foobar"
-    headers = {"Authorization": f"Bearer {token}"}
+    dummy_token = "foobar"
+    headers = {"Authorization": f"Bearer {dummy_token}"}
     response = client.post(
         "/create-blog", json={"content": "This is a blog"}, headers=headers
     )
