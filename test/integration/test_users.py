@@ -61,3 +61,15 @@ def test_sign_up_fails_when_user_exists(client: TestClient, db: Session) -> None
     response = client.post(f"/user/sign-up", json=user_sign_up)
     assert response.status_code == status.HTTP_400_BAD_REQUEST
     assert response.json() == {"detail": "failed to create user, user already exists"}
+
+
+def test_sign_up_fails_when_invalid_email_address_is_given(client: TestClient, db: Session) -> None:
+    create_john_doe_user(db)
+    user_sign_up = {
+        "username": "john.doe",
+        "password": "password",
+        "email": "foo.bar",
+    }
+    response = client.post(f"/user/sign-up", json=user_sign_up)
+    assert response.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
+    assert response.json()["detail"][0]["msg"] == "invalid email address"

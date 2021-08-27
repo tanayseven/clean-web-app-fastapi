@@ -1,3 +1,4 @@
+import re
 from typing import Union
 
 from fastapi import APIRouter, Depends, status
@@ -5,6 +6,7 @@ from fastapi.responses import Response
 from fastapi.security import OAuth2PasswordRequestForm
 from jose import jwt, JWTError  # type: ignore
 from passlib.context import CryptContext  # type: ignore
+from pydantic import validator
 from pydantic.main import BaseModel
 from sqlalchemy.orm import Session
 
@@ -19,6 +21,13 @@ class SignUpRequest(BaseModel):
     username: str
     password: str
     email: str
+
+    @validator("email")
+    def email_should_be_valid(cls, value: str) -> str:
+        regex = re.compile(r"^\S+@\S+$")
+        if regex.fullmatch(value) is None:
+            raise ValueError("invalid email address")
+        return value
 
 
 @router.post("/user/sign-up", tags=["user", "sign-up"], response_model=DetailResponse)
