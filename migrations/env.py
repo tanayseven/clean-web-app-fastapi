@@ -7,6 +7,7 @@ from alembic import context
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
+from src.database import Base
 
 config = context.config
 
@@ -20,7 +21,8 @@ fileConfig(config.config_file_name)
 # target_metadata = mymodel.Base.metadata
 from src.db_tables import tables
 
-target_metadata = [table.metadata for table in tables]
+_ = tables
+target_metadata = [Base.metadata]
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:
