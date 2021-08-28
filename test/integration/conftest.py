@@ -8,7 +8,7 @@ from sqlalchemy.exc import ProgrammingError
 from sqlalchemy.orm import Session
 from urllib3 import Retry  # type: ignore
 
-from src.database import get_db, engine
+from src.database import engine, SessionLocal
 from src.db_tables import tables
 from src.main import app
 
@@ -33,7 +33,11 @@ def client() -> Generator[TestClient, None, None]:
 
 @pytest.fixture
 def db() -> Generator[Session, None, None]:
-    yield next(get_db())
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
 
 
 @pytest.fixture(scope="function", autouse=True)
